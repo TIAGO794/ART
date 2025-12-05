@@ -1,0 +1,7 @@
+{
+  "name": "SAFEMAINT",
+  "description": "Sistema de gestão de manutenção e segurança industrial com ART, Checklists e Programação.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
