@@ -6,24 +6,44 @@ export interface Employee {
   name: string;
   matricula: string;
   function: string;
+  status?: 'ACTIVE' | 'TRASH';
 }
 
 export interface User {
   id: string;
   name: string;
   matricula: string;
-  tel: string;
-  function: string;
   login: string;
-  password: string;
+  password?: string;
+  role: 'ADMIN' | 'OPERADOR';
+}
+
+export interface ARTStep {
+  item: number;
+  step: string;
+  riskLevel: string;
+}
+
+export interface ARTRiskItem {
+  situation: string;
+  total: number;
+  riskLevel: string;
 }
 
 export interface RegisteredART {
   id: string;
-  number: string;
-  name: string;
-  fileUrl?: string; // Simulated path
-  risks: string[]; // Mock risks associated with this ART
+  code: string; // Código da ART (ex: 33777)
+  company: string;
+  taskName: string; // Tarefa a ser executada
+  area: string; // Gerência
+  omve?: string; 
+  emissionDate?: string;
+  pdfUrl?: string; // Original PDF URL
+  
+  // PDF Content Structures
+  risks: ARTRiskItem[];
+  controlMeasures: string; // Texto corrido ou HTML das medidas
+  steps: ARTStep[]; // Passo a passo da tarefa
 }
 
 export interface HeaderData {
@@ -38,9 +58,9 @@ export interface HeaderData {
 export interface SignatureRecord {
     id: string;
     name: string;
-    matricula: string; // Added
-    function: string;  // Added
-    role: string; // 'EXECUTANTE' | 'RESPONSAVEL' | 'TECNICO'
+    matricula: string;
+    function: string;
+    role: string;
     signatureData: string;
     date: string;
 }
@@ -50,37 +70,40 @@ export interface DocumentRecord {
   type: 'ART_EMERGENCIAL' | 'ART_ATIVIDADE' | 'CHECKLIST' | 'RELATORIO';
   header: HeaderData;
   createdAt: string;
-  status: 'ATIVO' | 'LIXEIRA' | 'RASCUNHO';
-  content: any; // Flexible payload depending on type
+  status: 'ATIVO' | 'LIXEIRA' | 'RASCUNHO' | 'ARQUIVADO';
+  content: any;
   signatures: SignatureRecord[];
 }
 
-// Updated to match the user's specific table model
 export interface ScheduleItem {
   id: string;
-  frotaOm: string;          // FROTA/OM
-  description: string;      // DESCRIÇÃO DA ATIVIDADE
-  resources: string;        // RECURSOS
-  dateMin: string;          // DATA MIN
-  dateMax: string;          // DATA MAX
-  priority: string;         // PRIORIDADE
-  peopleCount: number;      // N DE PESSOAS
-  hours: number;            // H
-  dateStart: string;        // DATA INICIO
-  dateEnd: string;          // DATA FIM
-  workCenter: string;       // CENTRO DE TRABALHO
-  timeStart: string;        // HORA INICIO
-  timeEnd: string;          // HORA FIM
-  status: string;           // Internal status
+  frotaOm: string;
+  description: string;
+  resources: string;
+  resources2: string;
+  dateMin: string;
+  dateMax: string;
+  priority: string;
+  peopleCount: number;
+  hours: number;
+  dateStart: string;
+  dateEnd: string;
+  workCenter: string;
+  timeStart: string;
+  timeEnd: string;
+  status: string;
 }
 
 export interface ActiveMaintenance {
   id: string;
   header: HeaderData;
-  startTime: string; // ISO string
-  artId: string; // Link to the specific ART document
+  startTime: string;
+  artId: string;
   artType: 'ART_EMERGENCIAL' | 'ART_ATIVIDADE';
-  origin: 'PREVENTIVA' | 'CORRETIVA'; // Determines Card Color (Yellow vs Red)
+  origin: 'PREVENTIVA' | 'CORRETIVA';
+  status?: 'ANDAMENTO' | 'PAUSADA';
+  currentSessionStart?: string;
+  accumulatedTime?: number;
 }
 
 export interface MaintenanceLog {
@@ -90,7 +113,28 @@ export interface MaintenanceLog {
   description: string;
   startTime: string;
   endTime: string;
-  duration: string; // Formatted string HH:MM:SS
-  responsible: string; // Name of the first person who signed the ART
-  status: string; // 'FINALIZADO' | 'PARCIAL'
+  duration: string;
+  responsible: string;
+  status: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: string;
+  role: string;
+  text: string;
+  timestamp: string;
+  isSystem?: boolean;
+}
+
+export interface OMRecord {
+  id: string;
+  omNumber: string;
+  description: string;
+  tag: string;
+  type: 'CORRETIVA' | 'PREVENTIVA';
+  status: 'PENDENTE' | 'EM_ANDAMENTO' | 'CONCLUIDA';
+  createdAt: string;
+  pdfUrl?: string; // Simulação do arquivo
+  createdBy: string;
 }

@@ -1,6 +1,11 @@
 {
   "name": "SAFEMAINT",
-  "description": "Sistema de gestão de manutenção e segurança industrial com ART, Checklists e Programação.",
+  "short_name": "SAFEMAINT",
+  "description": "Sistema de gestão de manutenção e segurança industrial.",
+  "theme_color": "#16a34a",
+  "background_color": "#111827",
+  "display": "standalone",
+  "orientation": "portrait",
   "requestFramePermissions": [
     "camera"
   ]
